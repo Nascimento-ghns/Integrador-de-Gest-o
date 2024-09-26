@@ -13,21 +13,28 @@
     <title>Integrador de Gestão</title>
 </head>
 <body>
-    <section class="container">
-        <div  class="row">
-            <div class="col-md-4"></div>    
-            <div class="col-md-4">
-                <form action="">
-                    <h1>Login</h1>
-                    <hr>
-                    <label for="email">Email:</label>
-                    <input type="text" placeholder="digite seu email">
-                    <br>
-                    <label for="senha">Senha:</label>
-                    <input type="text" placeholder="digite sua senha">
-                </form>
+    
+    <div class="container-fluid" id="corpo">
+        <div  class="row" id="login">
+            <div class="offset-4 col-md-4">
+                <div class="container">
+                    <form action="" id="formLogin" class="fundoCinza">
+                        <h1 class="centralizaTitulo">Login</h1>
+                        <hr>
+                        <label for="email">Email:</label>
+                        <input type="text" placeholder="digite seu email">
+                        <br>
+                        <label for="senha">Senha:</label>
+                        <input type="text" placeholder="digite sua senha">
+                        <br>
+                        <hr>
+                        <button type="button" class="btn btn-success">Entrar</button>
+                        <button type="button" class="btn btn-danger">Cancelar</button>
+                        <button type="button" class="btn btn-warning">Cadastrar</button>
+                    </form>
+                </div>
             </div>
-        </div>    
-    </section>
+        </div>
+    </div>
 </body>
 </html>
