@@ -6,11 +6,19 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="bibliotecas/css/bootstrap.css">
-    <link rel="stylesheet" href="bibliotecas/js/bootstrap.js">
+    <script src="bibliotecas/js/jQuery.js"></script>
+    <script src="bibliotecas/js/bootstrap.js"></script>
     <link rel="stylesheet" href="css/estilo.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Integrador de Gestão</title>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("#criaUsuario").click(function(){
+                location.href = "cadastroUsuario.php"  /* Redireciona para a página de cadastro de usuário */
+            })
+        });
+    </script>
 </head>
 <body>
     
@@ -30,7 +38,7 @@
                         <hr>
                         <button type="button" class="btn btn-success">Entrar</button>
                         <button type="button" class="btn btn-danger">Cancelar</button>
-                        <button type="button" class="btn btn-warning">Cadastrar</button>
+                        <button id="criaUsuario" name="criaUsuario" type="button" class="btn btn-warning" onclick="">Cadastrar</button>
                     </form>
                 </div>
             </div>
