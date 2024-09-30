@@ -17,7 +17,7 @@ input{
     border-radius: 5px;
     width: 100%;
 }
-#formLogin{
+.form{
     border: 3px solid;
     border-radius: 5px;
     border-style: inset;

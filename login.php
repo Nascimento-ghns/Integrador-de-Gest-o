@@ -3,7 +3,7 @@
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <link rel="stylesheet" href="bibliotecas/css/bootstrap.css">
     <script src="bibliotecas/js/jQuery.js"></script>
@@ -26,7 +26,7 @@
         <div  class="row" id="login">
             <div class="offset-4 col-md-4">
                 <div class="container">
-                    <form action="" id="formLogin" class="fundoCinza">
+                    <form action="" class="fundoCinza form">
                         <h1 class="centralizaTitulo">Login</h1>
                         <hr>
                         <label for="email">Email:</label>
