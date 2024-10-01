@@ -56,4 +56,20 @@ class usuarioRepositorio
         $statement->execute();
     }
 
+    public function logarUsuario(string $email, int $senha)
+    {
+        $sql = "SELECT * FROM usuario where email = ? and senha = ?";
+        $statement = $this->pdo->prepare($sql);
+        $statement->bindValue(1,$email);
+        $statement->bindValue(2,$senha);
+        $statement->execute();
+        $dados = $statement->fetch(PDO::FETCH_ASSOC);
+        if ($statement->rowCount() == 1) {
+            header('Location: index.php');
+        }
+        else{
+            header('Location: login.php?sucesso=0');
+        }
+    }
+
 }

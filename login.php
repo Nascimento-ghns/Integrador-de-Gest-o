@@ -1,4 +1,12 @@
 <?php
+    require "src/conexaoBD.php";
+    require "src/modelo/usuario.php";
+    require "src/repositorio/usuarioRepositorio.php";
+
+    if (isset($_POST['login'])){
+        $usuarioRepositorio = new usuarioRepositorio($pdo);
+        $usuarioRepositorio->logarUsuario($_POST['email'], $_POST['senha']);
+    }
 
 ?>
 
@@ -26,18 +34,18 @@
         <div  class="row" id="login">
             <div class="offset-4 col-md-4">
                 <div class="container">
-                    <form action="" class="fundoCinza form">
+                    <form action="" method="post" class="fundoCinza form">
                         <h1 class="centralizaTitulo">Login</h1>
                         <hr>
                         <label for="email">Email:</label>
-                        <input type="text" placeholder="digite seu email">
+                        <input type="text" id="email" name="email" placeholder="digite seu email">
                         <br>
                         <label for="senha">Senha:</label>
-                        <input type="text" placeholder="digite sua senha">
+                        <input type="text" id="senha" name="senha" placeholder="digite sua senha">
                         <br>
                         <hr>
-                        <button type="button" class="btn btn-success">Entrar</button>
-                        <button type="button" class="btn btn-danger">Cancelar</button>
+                        <button type="submit" name="login" class="btn btn-success">Entrar</button>
+                        <button type="reset" class="btn btn-danger">Cancelar</button>
                         <button id="criaUsuario" name="criaUsuario" type="button" class="btn btn-warning" onclick="">Cadastrar</button>
                     </form>
                 </div>
