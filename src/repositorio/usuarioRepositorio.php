@@ -67,6 +67,7 @@ class usuarioRepositorio
         if ($statement->rowCount() == 1) {
             session_start();
             $_SESSION['logado'] = true;
+            $_SESSION['acesso'] = $dados['acesso'];
             header('Location: index.php');
         }
         else{
