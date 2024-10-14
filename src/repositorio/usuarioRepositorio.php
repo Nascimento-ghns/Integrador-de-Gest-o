@@ -65,6 +65,8 @@ class usuarioRepositorio
         $statement->execute();
         $dados = $statement->fetch(PDO::FETCH_ASSOC);
         if ($statement->rowCount() == 1) {
+            session_start();
+            $_SESSION['logado'] = true;
             header('Location: index.php');
         }
         else{

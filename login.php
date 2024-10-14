@@ -41,7 +41,7 @@
                         <input type="text" id="email" name="email" placeholder="digite seu email">
                         <br>
                         <label for="senha">Senha:</label>
-                        <input type="text" id="senha" name="senha" placeholder="digite sua senha">
+                        <input type="password" id="senha" name="senha" placeholder="digite sua senha">
                         <br>
                         <hr>
                         <button type="submit" name="login" class="btn btn-success">Entrar</button>
