@@ -22,7 +22,7 @@
 </head>
 <body>
     <div class="container-fluid" id="corpo">
-        <?php require "src/require/navbar.php"; ?>
+        <?php require "src/require/navbarMaterial.php"; ?>
     </div>
 </body>
 </html>
