@@ -39,6 +39,10 @@ input{
     height: 100%;
     
 }
+.menus2{
+    height: 50%;
+}
+
 .menu{
     height: 100%;
 }
@@ -47,7 +51,13 @@ input{
     text-decoration: none;
     color: black;
 }
+.menus2 a{
+    font-size: 20px;
+}
 .menu a:hover{
     text-decoration: underline;
     color: rgb(63, 186, 202);
+}
+.titulo a{
+    font-size: 25px;
 }
