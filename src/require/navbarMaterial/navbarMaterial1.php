@@ -9,7 +9,7 @@
         </div>
         <div class="row menus2">
             <div class="col-md-3 menu d-flex flex-column justify-content-center align-items-center fundoCinza"><a href="consultarMaterial.php">Consultar Material</a></div>
-            <div class="col-md-3 menu d-flex flex-column justify-content-center align-items-center fundoCinza"><a href="">Cadastrar Material</a></div>
+            <div class="col-md-3 menu d-flex flex-column justify-content-center align-items-center fundoCinza"><a href="cadastrarMaterial.php">Cadastrar Material</a></div>
             <div class="col-md-3 menu d-flex flex-column justify-content-center align-items-center fundoCinza"><a href="">Material por Dependencia</a></div>
             <div class="col-md-3 menu d-flex flex-column justify-content-center align-items-center fundoCinza"><a href="">Listar Pedidos</a></div>
         </div>

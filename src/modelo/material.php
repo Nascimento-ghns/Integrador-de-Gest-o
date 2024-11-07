@@ -2,117 +2,117 @@
 
 class Material{
 
-    private ?int $id;
-    private string $nome;
-    private string $descricao;
-    private string $fabricante;
-    private string $modelo;
-    private string $tipo;
-    private int $quantidade;
-    private string $dataInclusao;
-    private ?string $dataBaixa;
-    private ?float $valorCarga;
-    private ?string $dataValorCotacao;
-    private ?float $valorCotacao;
-    private int $prevAlocDep;
-    private ?string $catMat;
-    private ?int $numSerie;
+    private ?int $matId;
+    private string $matNome;
+    private string $matDescricao;
+    private string $matFabricante;
+    private string $matModelo;
+    private ?string $matTipo;
+    private int $matQuant;
+    private string $matDataInclusao;
+    private ?string $matDataBaixa;
+    private ?float $matValorCarga;
+    private ?string $matDataValorCotacao;
+    private ?float $matValorCotacao;
+    private ?int $matPrevAlocDep;
+    private ?string $matCatMat;
+    private ?string $matNumSerie;
 
-    public function __construct(?int $id, string $nome, string $descricao, string $fabricante, string $modelo, string $tipo, int $quantidade, string $dataInclusao, ?string $dataBaixa, ?float $valorCarga, ?string $dataValorCotacao, ?float $valorCotacao, int $prevAlocDep, ?string $catMat, ?int $numSerie)
+    public function __construct(?int $matId, string $matNome, string $matDescricao, string $matFabricante, string $matModelo, ?string $matTipo, int $matQuant, string $matDataInclusao, ?string $matDataBaixa, ?float $matValorCarga, ?string $matDataValorCotacao, ?float $matValorCotacao, ?int $matPrevAlocDep, ?string $matCatMat, ?string $matNumSerie)
     {
-        $this->id = $id;
-        $this->nome = $nome;
-        $this->descricao = $descricao;
-        $this->fabricante = $fabricante;
-        $this->modelo = $modelo;
-        $this->tipo = $tipo;
-        $this->quantidade = $quantidade;
-        $this->dataInclusao = $dataInclusao;
-        $this->dataBaixa = $dataBaixa;
-        $this->valorCarga = $valorCarga;
-        $this->dataValorCotacao = $dataValorCotacao;
-        $this->valorCotacao = $valorCotacao;
-        $this->prevAlocDep = $prevAlocDep;
-        $this->catMat = $catMat;
-        $this->numSerie = $numSerie;
+        $this->matId = $matId;
+        $this->matNome = $matNome;
+        $this->matDescricao = $matDescricao;
+        $this->matFabricante = $matFabricante;
+        $this->matModelo = $matModelo;
+        $this->matTipo = $matTipo;
+        $this->matQuant = $matQuant;
+        $this->matDataInclusao = $matDataInclusao;
+        $this->matDataBaixa = $matDataBaixa;
+        $this->matValorCarga = $matValorCarga;
+        $this->matDataValorCotacao = $matDataValorCotacao;
+        $this->matValorCotacao = $matValorCotacao;
+        $this->matPrevAlocDep = $matPrevAlocDep;
+        $this->matCatMat = $matCatMat;
+        $this->matNumSerie = $matNumSerie;
     }
 
     public function getId(): int
     {
-        return $this->id;
+        return $this->matId;
     }
 
 
     public function getNome(): string
     {
-        return $this->nome;
+        return $this->matNome;
     }
 
 
     public function getDescricao(): string
     {
-        return $this->descricao;
+        return $this->matDescricao;
     }
 
 
     public function getFabricante(): string
     {
-        return $this->fabricante;
+        return $this->matFabricante;
     }
 
     public function getModelo(): string
     {
-        return $this->modelo;
+        return $this->matModelo;
     }
 
-    public function getTipo(): string
+    public function getTipo(): ?string
     {
-        return $this->tipo;
+        return $this->matTipo;
     }
 
-    public function getQuantidade(): int
+    public function getQuant(): int
     {
-        return $this->quantidade;
+        return $this->matQuant;
     }
 
     public function getDataInclusao(): string
     {
-        return $this->dataInclusao;
+        return $this->matDataInclusao;
     }
 
-    public function getDataBaixa(): string
+    public function getDataBaixa(): ?string
     {
-        return $this->dataBaixa;
+        return $this->matDataBaixa;
     }
 
-    public function getValorCarga(): float
+    public function getValorCarga(): ?float
     {
-        return $this->valorCarga;
+        return $this->matValorCarga;
     }
 
-    public function getDataValorCotacao(): string
+    public function getDataValorCotacao(): ?string
     {
-        return $this->dataValorCotacao;
+        return $this->matDataValorCotacao;
     }
 
-    public function getValorCotacao(): float
+    public function getValorCotacao(): ?float
     {
-        return $this->valorCotacao;
+        return $this->matValorCotacao;
     }
 
-    public function getPrevAlocDep(): int
+    public function getPrevAlocDep(): ?int
     {
-        return $this->prevAlocDep;
+        return $this->matPrevAlocDep;
     }
     
-    public function getCatMat(): string
+    public function getCatMat(): ?string
     {
-        return $this->catMat;
+        return $this->matCatMat;
     }
 
-    public function getNumSerie(): int
+    public function getNumSerie(): ?string
     {
-        return $this->numSerie;
+        return $this->matNumSerie;
     }
 
 }

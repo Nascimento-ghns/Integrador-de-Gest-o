@@ -14,21 +14,21 @@ class materialRepositorio
 
     private function formarObjeto($dados)
     {
-        return new Material($dados['id'],
-            $dados['nome'],
-            $dados['descricao'],
-            $dados['fabricante'],
-            $dados['modelo'],
-            $dados['tipo'],
-            $dados['quantidade'],
-            $dados['dataInclusao'],
-            $dados['dataBaixa'],
-            $dados['valorCarga'],
-            $dados['dataValorCotacao'],
-            $dados['valorCotacao'],
-            $dados['prevAlocDep'],
-            $dados['catMat'],
-            $dados['numSerie']
+        return new Material($dados['matId'],
+            $dados['matNome'],
+            $dados['matDescricao'],
+            $dados['matFabricante'],
+            $dados['matModelo'],
+            $dados['matTipo'],
+            $dados['matQuant'],
+            $dados['matDataInclusao'],
+            $dados['matDataBaixa'],
+            $dados['matValorCarga'],
+            $dados['matDataValorCotacao'],
+            $dados['matValorCotacao'],
+            $dados['matPrevAlocDep'],
+            $dados['matCatMat'],
+            $dados['matNumSerie']
         );
     }
 
@@ -45,13 +45,68 @@ class materialRepositorio
         return $todosOsDados;
     }
 
-    public function deletar(int $id)
+    public function salvar(Material $material)
     {
-        $sql = "DELETE FROM material WHERE id = ?";
+        $sql = "INSERT INTO material (matNome, matDescricao, matFabricante, matModelo, matTipo, matQuant, matDataInclusao, matDataBaixa, matValorCarga, matDataValorCotacao, matValorCotacao, matPrevAlocDep, matCatMat, matNumSerie) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         $statement = $this->pdo->prepare($sql);
-        $statement->bindValue(1,$id);
+        $statement->bindValue(1, $material->getNome());
+        $statement->bindValue(2, $material->getDescricao());
+        $statement->bindValue(3, $material->getFabricante());
+        $statement->bindValue(4, $material->getModelo());
+        $statement->bindValue(5, $material->getTipo());
+        $statement->bindValue(6, $material->getQuant());
+        $statement->bindValue(7, $material->getDataInclusao());
+        $statement->bindValue(8, $material->getDataBaixa());
+        $statement->bindValue(9, $material->getValorCarga());
+        $statement->bindValue(10, $material->getDataValorCotacao());
+        $statement->bindValue(11, $material->getValorCotacao());
+        $statement->bindValue(12, $material->getPrevAlocDep());
+        $statement->bindValue(13, $material->getCatMat());
+        $statement->bindValue(14, $material->getNumSerie());
+        $statement->execute();
+    }
+
+    public function buscar(int $matId)
+    {
+        $sql = "SELECT * FROM material WHERE matId = ?";
+        $statement = $this->pdo->prepare($sql);
+        $statement->bindValue(1, $matId);
         $statement->execute();
 
+        $dados = $statement->fetch(PDO::FETCH_ASSOC);
+
+        return $this->formarObjeto($dados);
+    }
+
+    public function excluir(int $matId)
+    {
+        $sql = "DELETE FROM material WHERE matId = ?";
+        $statement = $this->pdo->prepare($sql);
+        $statement->bindValue(1,$matId);
+        $statement->execute();
+
+    }
+
+    public function atualizar(Material $material)
+    {
+        $sql = "UPDATE material SET matNome = ?, matDescricao = ?, matFabricante = ?, matModelo = ?, matTipo = ?, matQuant = ?, matDataInclusao = ?, matDataBaixa = ?, matValorCarga = ?, matDataValorCotacao = ?, matValorCotacao = ?, matPrevAlocDep = ?, matCatMat = ?, matNumSerie = ? WHERE matId = ?";
+        $statement = $this->pdo->prepare($sql);
+        $statement->bindValue(1, $material->getNome());
+        $statement->bindValue(2, $material->getDescricao());
+        $statement->bindValue(3, $material->getFabricante());
+        $statement->bindValue(4, $material->getModelo());
+        $statement->bindValue(5, $material->getTipo());
+        $statement->bindValue(6, $material->getQuant());
+        $statement->bindValue(7, $material->getDataInclusao());
+        $statement->bindValue(8, $material->getDataBaixa());
+        $statement->bindValue(9, $material->getValorCarga());
+        $statement->bindValue(10, $material->getDataValorCotacao());
+        $statement->bindValue(11, $material->getValorCotacao());
+        $statement->bindValue(12, $material->getPrevAlocDep());
+        $statement->bindValue(13, $material->getCatMat());
+        $statement->bindValue(14, $material->getNumSerie());
+        $statement->bindValue(15, $material->getId());
+        $statement->execute();
     }
 
 }

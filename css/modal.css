@@ -1,0 +1,81 @@
+/*
+	Estilos necessários para modificar janela modal
+
+	A seguir uma classe para cada tipo de cor do Bootstrap. Devem ser aplicadas
+	na div que contém a classe ".modal-header", visando mudar a cor de fundo do header
+	de	acordo com o tipo de janela modal que será exeibido (erro, sucesso, etc.)
+*/
+
+.modal-header-success {
+	/*  
+		Quando modificamos a cor de fundo da classe .modal-header os cantos superiores
+		deixam de ser arredondados. Para desfazer isso, usamos os estilos border-top-*-radius
+		abaixo.
+	*/
+	color:#fff;
+	background-color: #5cb85c;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+
+.modal-header-warning {
+	color:#fff;
+	background-color: #f0ad4e;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+
+.modal-header-danger {
+	background-color: rgb(201,48,44); 
+	color: white;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+
+.modal-header-info {
+	color:#fff;
+	background-color: #5bc0de;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+
+.modal-header-primary {
+	background-color: #428bca; 
+	color: white;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+
+/*  
+  Modifica a cor do texto usada na classe ".close" do bootstrap. o estilo opacity coloca o texto
+  totalmente opaco, mudando o padrão, que é de 20% de opacidade. Essa cor deve ser a mesma usada
+  pelas classes acima (branco).
+*/
+.close, .close:hover {
+      color: #fff; 
+      opacity: 1; 
+}
+
+/*
+    Estilos necessários para centralziar o modal do bootstrap na vertical.
+    Disponível em: https://codepen.io/dimbslmh/full/mKfCc
+*/
+
+.modal {
+      text-align: center;
+      padding: 0!important;
+}
+
+.modal:before {
+      content: '';
+      display: inline-block;
+      height: 100%;
+      vertical-align: middle;
+      margin-right: -4px;
+}
+
+.modal-dialog {
+      display: inline-block;
+      text-align: left;
+      vertical-align: middle;
+}

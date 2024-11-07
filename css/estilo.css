@@ -1,11 +1,16 @@
 *{
     font-size: 15px;
 }
+html, body{
+    height: 100%;
+    background-color: rgb(76, 166, 207);
+    
+}
 .centralizaTitulo{
     text-align: center;
 }
 #corpo{
-    height: 100vh;
+    height: 100%;
     background-color: rgb(76, 166, 207);
 }
 #login{
@@ -31,9 +36,12 @@ input{
     height: 100px;
     background-color: rgb(219, 208, 208);
 }
-.glyphicon{
-    width: 30px;
-    height: 30px;
+.fundoDiv{
+    background-color: rgb(219, 208, 208);
+    margin-top: 40px;
+    border-radius: 5px;
+    padding: 0 5px 0 5px;
+    margin-bottom: 20px;
 }
 .menus{
     height: 100%;
@@ -60,4 +68,8 @@ input{
 }
 .titulo a{
     font-size: 25px;
+}
+td button{
+    border-radius: 8px;
+    border-width: 2px;
 }
