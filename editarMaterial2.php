@@ -49,10 +49,11 @@
           <p>Valor carga: <input type='text' id='matValorCarga' name='matValorCarga' value='$valorCarga'> </p>
           <p>Data valor cotação: <input type='text' id='matDataValorCotacao' name='matDataValorCotacao' value='$dataValorCotacao'> </p>
           <p>Valor cotação: <input type='text' id='matValorCotacao' name='matValorCotacao' value='$valorCotacao'> </p>
-          <p>Previa de alocação de material: <input type='text' id='matPrevAlocMat' name='matPrevAlocMat' value='$prevAlocMat'> </p>
+          <p>Previa de alocação de material: <input type='text' id='matPrevAlocMat' name='matPrevAlocDep' value='$prevAlocMat'> </p>
           <p>Categoria de material: <input type='text' id='matCatMat' name='matCatMat' value='$catMat'> </p>
           <p>Número de série: <input type='text' id='matNumSerie' name='matNumSerie' value='$numSerie'> </p>
           <button type='submit' name='editar' class='btn btn-success'>Alterar</button>
+          <button type='submit' name='duplicar' class='btn btn-info'>Duplicar</button>
           <button type='submit' name='excluir' id='excluir' class='btn btn-danger'>Excluir</button>
         </form>  
           ";

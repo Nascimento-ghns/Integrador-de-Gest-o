@@ -5,7 +5,7 @@
     require "src/modelo/material.php";
     require "src/repositorio/materialRepositorio.php";
     
-
+  
 ?>
 
 <!DOCTYPE html>
@@ -18,17 +18,49 @@
     <script src="bibliotecasProforma/js/bibliotecaBootstrap.js"></script>
     <link rel="stylesheet" type="text/css" href="css/estilo.css">
     <link rel="stylesheet" type="text/css" href="css/modal.css">
+    <script src="bibliotecas/js/formCadMaterial.js" defer></script>
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Integrador de Gestão</title>
 
     <script type="text/javascript">
-        <?php echo "ola"; ?>
+
         $(document).ready(function(){
             
-            
+            $('#incMat').submit(function(evento){
+                
+                evento.preventDefault();
+					
+					if (validarDados()) {
+						
+						var dados = jQuery( this ).serialize();
+						
+						$.ajax({
+							type: "POST",
+							url: "cadastrarMaterial2.php",
+							data: dados,
+							success: function( resposta ) {		
+								/*
+									Se existir a palavra "Erro" na resposta recebida, colocar "Erro de Cadastramento" no título da janela de erro. Se não existir, colocar "Inclusão bem sucedida" no título da janela de sucesso. Emk ambos os casos, coloca no corpo da mensagem a resposta retornada pelo incEnd2.php
+								*/
+								if (resposta.indexOf("Erro") != -1 ) {
+									$("#modalErroTitulo").html('Erro de Cadastramento');
+									$("#modalErro").html( resposta );
+									$("#janelaModalErro").modal();
+								}
+								else {
+									$("#modalTextoTitulo").text("Inclusão bem sucedida");
+									$("#modalTexto").html( resposta );
+									$("#janelaModal").modal();
+								}
+							}
+						});			
+					}		
+            });
+
         });
+
     </script>
     
 </head>
@@ -37,7 +69,7 @@
         <?php require "src/require/navbarMaterial.php"; ?>
         <div class="row">
             <div class="col-md-8 offset-md-2 fundoDiv">
-                <form method="post" class="fundoCinza form">
+                <form method="post" id="incMat" class="fundoCinza form">
                     <h1 class="centralizaTitulo">Cadastro de Material</h1>
                     <hr>
                     <label for="nome">Nome:</label>
@@ -91,7 +123,8 @@
         </div>
     </div>
     <?php 
-                        
+      include "src/require/modalErro.php";
+      include "src/require/modalSucesso.php";                 
     ?>
 </body>
 </html>

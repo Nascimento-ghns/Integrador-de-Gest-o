@@ -1,8 +1,9 @@
 <?php
-
-    if($_POST['prevAlocMat'] == ""){
-        $prevAlocMat = null;
-    }
+    
+    require "src/require/acesso.php";
+    require "src/conexaoBD.php";
+    require "src/modelo/material.php";
+    require "src/repositorio/materialRepositorio.php";
 
     $dataInclusao = str_replace('/', '-', $_POST['dataInclusao']);
     $dataInclusaoConvertida = date('Y-m-d', strtotime($dataInclusao));
@@ -10,6 +11,15 @@
     $dataBaixaConvertida = date('Y-m-d', strtotime($dataBaixa));
     $dataValorCotacao = str_replace('/', '-', $_POST['dataValorCotacao']);
     $dataValorCotacaoConvertida = date('Y-m-d', strtotime($dataValorCotacao));
+
+    $valorCarga = $_POST['valorCarga'];
+    if($valorCarga == ""){
+        $valorCarga = null;
+    }
+    $valorCotacao = $_POST['valorCotacao'];
+    if($valorCotacao == ""){
+        $valorCotacao = null;
+    }
 
     $material = new Material(null,
     $_POST['nome'],
@@ -20,10 +30,10 @@
     $_POST['quantidade'],
     $dataInclusaoConvertida,
     $dataBaixaConvertida,
-    $_POST['valorCarga'],
+    $valorCarga,
     $dataValorCotacaoConvertida,
-    $_POST['valorCotacao'],
-    $prevAlocMat,
+    $valorCotacao,
+    $_POST['prevAlocMat'],
     $_POST['catMat'],
     $_POST['numSerie']
     );
