@@ -78,6 +78,17 @@ class materialRepositorio
         return $this->formarObjeto($dados);
     }
 
+    public function select()
+    {
+        $sql = "SELECT depNome FROM dependencia";
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute();
+        $dados = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return $dados;
+
+    }
+
     public function excluir(int $matId)
     {
         $sql = "DELETE FROM material WHERE matId = ?";

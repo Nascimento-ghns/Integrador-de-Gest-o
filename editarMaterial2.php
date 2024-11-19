@@ -35,6 +35,8 @@
     $catMat = $material->getCatMat();
     $numSerie = $material->getNumSerie();
 
+    $select = $materialRepositorio->select($prevAlocMat);
+
 	echo "
         <form method='post'>
           <input type='hidden' id='matId' name='matId' value='$id'>
@@ -49,14 +51,19 @@
           <p>Valor carga: <input type='text' id='matValorCarga' name='matValorCarga' value='$valorCarga'> </p>
           <p>Data valor cotação: <input type='text' id='matDataValorCotacao' name='matDataValorCotacao' value='$dataValorCotacao'> </p>
           <p>Valor cotação: <input type='text' id='matValorCotacao' name='matValorCotacao' value='$valorCotacao'> </p>
-          <p>Previa de alocação de material: <input type='text' id='matPrevAlocMat' name='matPrevAlocDep' value='$prevAlocMat'> </p>
+          <p>Previa de alocação de material: <input type='text' id='matPrevAlocMat' name='matPrevAlocDep' value='$prevAlocMat'></p>
           <p>Categoria de material: <input type='text' id='matCatMat' name='matCatMat' value='$catMat'> </p>
           <p>Número de série: <input type='text' id='matNumSerie' name='matNumSerie' value='$numSerie'> </p>
           <button type='submit' name='editar' class='btn btn-success'>Alterar</button>
-          <button type='submit' name='duplicar' class='btn btn-info'>Duplicar</button>
+          <button type='submit' name='duplicar' class='btn btn-info' value='autoriza'>Duplicar</button>
           <button type='submit' name='excluir' id='excluir' class='btn btn-danger'>Excluir</button>
         </form>  
           ";
 ?>
 </body>
 </html>
+<?php /*<p>Previa de alocação de material: <select id='matPrevAlocMat' name='matPrevAlocDep'>";
+          foreach ($select as $opcoes): 
+            echo"<option value='$opcoes'></option>";
+          endforeach;
+          echo " </select></p>*/

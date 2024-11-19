@@ -1,5 +1,7 @@
 <?php
-
+    if (isset($_POST['duplicar'])){
+        header('location:http://localhost/IntegradorDeGest%C3%A3o/redirecionaDuplicar.php');
+    }
     require "src/require/acesso.php";
     require "src/conexaoBD.php";
     require "src/modelo/material.php";
