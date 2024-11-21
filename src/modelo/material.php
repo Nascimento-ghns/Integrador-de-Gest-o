@@ -7,7 +7,7 @@ class Material{
     private string $matDescricao;
     private string $matFabricante;
     private string $matModelo;
-    private ?string $matTipo;
+    private ?int $matTipo;
     private int $matQuant;
     private string $matDataInclusao;
     private ?string $matDataBaixa;
@@ -18,7 +18,7 @@ class Material{
     private ?string $matCatMat;
     private ?string $matNumSerie;
 
-    public function __construct(?int $matId, string $matNome, string $matDescricao, string $matFabricante, string $matModelo, ?string $matTipo, int $matQuant, string $matDataInclusao, ?string $matDataBaixa, ?float $matValorCarga, ?string $matDataValorCotacao, ?float $matValorCotacao, ?int $matPrevAlocDep, ?string $matCatMat, ?string $matNumSerie)
+    public function __construct(?int $matId, string $matNome, string $matDescricao, string $matFabricante, string $matModelo, ?int $matTipo, int $matQuant, string $matDataInclusao, ?string $matDataBaixa, ?float $matValorCarga, ?string $matDataValorCotacao, ?float $matValorCotacao, ?int $matPrevAlocDep, ?string $matCatMat, ?string $matNumSerie)
     {
         $this->matId = $matId;
         $this->matNome = $matNome;
@@ -65,7 +65,7 @@ class Material{
         return $this->matModelo;
     }
 
-    public function getTipo(): ?string
+    public function getTipo(): ?int
     {
         return $this->matTipo;
     }

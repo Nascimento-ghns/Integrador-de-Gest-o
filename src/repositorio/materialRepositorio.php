@@ -45,6 +45,19 @@ class materialRepositorio
         return $todosOsDados;
     }
 
+    public function buscarDependencia($depId)
+    {
+        $sql = "SELECT * FROM material where matPrevAlocDep = $depId";
+        $statement = $this->pdo->query($sql);
+        $dados = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        $todosOsDados = array_map(function ($material){
+            return $this->formarObjeto($material);
+        },$dados);
+
+        return $todosOsDados;
+    }
+
     public function salvar(Material $material)
     {
         $sql = "INSERT INTO material (matNome, matDescricao, matFabricante, matModelo, matTipo, matQuant, matDataInclusao, matDataBaixa, matValorCarga, matDataValorCotacao, matValorCotacao, matPrevAlocDep, matCatMat, matNumSerie) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
@@ -76,17 +89,6 @@ class materialRepositorio
         $dados = $statement->fetch(PDO::FETCH_ASSOC);
 
         return $this->formarObjeto($dados);
-    }
-
-    public function select()
-    {
-        $sql = "SELECT depNome FROM dependencia";
-        $statement = $this->pdo->prepare($sql);
-        $statement->execute();
-        $dados = $statement->fetchAll(PDO::FETCH_ASSOC);
-
-        return $dados;
-
     }
 
     public function excluir(int $matId)

@@ -1,11 +1,19 @@
 <?php
-
     require "src/require/acesso.php";
     require "src/conexaoBD.php";
     require "src/modelo/material.php";
     require "src/repositorio/materialRepositorio.php";
+    require "src/modelo/dependencia.php";
+    require "src/repositorio/dependenciaRepositorio.php";
+    require "src/modelo/tipo.php";
+    require "src/repositorio/tipoRepositorio.php";
+
+    $dependenciaRepositorio = new dependenciaRepositorio($pdo);
+    $dependencias = $dependenciaRepositorio->buscarTodos();
     
-  
+    $tipoRepositorio = new tipoRepositorio($pdo);
+    $tipos = $tipoRepositorio->buscarTodos();
+
 ?>
 
 <!DOCTYPE html>
@@ -85,7 +93,16 @@
                     <input type="text" id="modelo" name="modelo" require placeholder="digite o modelo">
                     <br>
                     <label for="tipo">Tipo:</label>
-                    <input type="text" id="tipo" name="tipo" require placeholder="digite o tipo">
+                    <select name="tipo" id="tipo">
+                        <option value=""></option>
+                        <?php
+                            foreach ($tipos as $tipos): 
+                                $id = $tipos->getId();
+                                $nome = $tipos->getNome();
+                                echo"<option value='$id'>$nome</option>";
+                            endforeach;
+                        ?>
+                    </select>
                     <br>
                     <label for="quantidade">Quantidade:</label>
                     <input type="text" id="quantidade" name="quantidade" require placeholder="digite a quantidade">
@@ -106,7 +123,16 @@
                     <input type="text" id="valorCotacao" name="valorCotacao" placeholder="digite o valor cotacao">
                     <br>
                     <label for="prevAlocMat">Previsão de alocação do material:</label>
-                    <input type="text" id="prevAlocMat" name="prevAlocMat" require placeholder="previa de alocação do material">
+                    <select name="prevAlocMat" id="prevAlocMat">
+                        <option value=""></option>
+                        <?php
+                            foreach ($dependencias as $dependencias): 
+                                $id = $dependencias->getId();
+                                $nome = $dependencias->getNome();
+                                echo"<option value='$id'>$nome</option>";
+                            endforeach;
+                        ?>
+                    </select>
                     <br>
                     <label for="catMat">CATMAT:</label>
                     <input type="text" id="catMat" name="catMat" placeholder="categoria do material">

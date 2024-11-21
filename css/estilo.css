@@ -22,6 +22,9 @@ input{
     border-radius: 5px;
     width: 100%;
 }
+select{
+    width: 100%;
+}
 .form{
     border: 3px solid;
     border-radius: 5px;
@@ -72,4 +75,8 @@ input{
 td button{
     border-radius: 8px;
     border-width: 2px;
+}
+.radio{
+    width: auto;
+    display: inline;
 }
