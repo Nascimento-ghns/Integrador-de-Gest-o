@@ -1,5 +1,5 @@
 <?php
-    if (isset($_POST['duplicar'])){
+    if (isset($_POST['duplicar']) or isset($_POST['editar']) or isset($_POST['excluir'])){
         header('location:http://localhost/IntegradorDeGest%C3%A3o/redirecionaDuplicar.php');
     }
     require "src/require/acesso.php";
@@ -28,6 +28,7 @@
     <title>Integrador de Gestão</title>
 
     <script type="text/javascript">
+
         function editar(idMaterial){
             $.ajax({
                 type: "post",
@@ -54,9 +55,34 @@
                 }
             });
         }
-        
-        $(document).ready(function(){
+        function confirmaAlterar(){
+            document.getElementById("confirmarAlterar").style.display = 'block';
+        }
+        function confirmaDuplicar(){
+            document.getElementById("confirmarDuplicar").style.display = 'block';
+        }
+        function confirmaExcluir(){
+            document.getElementById("confirmarExcluir").style.display = 'block';
+        }
+        $(function(){
+            $(".table-responsive input").keyup(function(){       
+                var index = $(this).parent().index();
+                var nth = ".table-responsive td:nth-child("+(index+1).toString()+")";
+                var valor = $(this).val().toUpperCase();
+                $(".table-responsive tbody tr").show();
+                $(nth).each(function(){
+                    if($(this).text().toUpperCase().indexOf(valor) < 0){
+                        $(this).parent().hide();
+                    }
+                });
+            });
             
+            $(".table-responsive input").blur(function(){
+                $(this).val("");
+            });
+            
+        });
+        $(document).ready(function(){
             
         });
     </script>
@@ -70,28 +96,37 @@
                 <br>
                 <h1 class="centralizaTitulo">Consulta de Material</h1>
                 <br>
-                <table style="width: 100%;" class="table table-striped table-bordered table-hover">
+                <table style="width: 100%;" class="table table-striped table-bordered table-hover table-responsive">
                     <thead class="thead-dark">
                         <tr>
                             <th style="display: none;">Id</th>
-                            <th class="text-center">Nome</th>
-                            <th class="text-center">Modelo</th>
-                            <th class="text-center">Quantidade</th>
-                            <th class="text-center">Fabricante</th>
-                            <th class="text-center">Editar</th>
-                            <th class="text-center">Exibir</th>
+                            <th class="text-center" width="50%">Nome</th>
+                            <th class="text-center" width="15%">Modelo</th>
+                            <th class="text-center" width="5%">Quantidade</th>
+                            <th class="text-center" width="10%">Fabricante</th>
+                            <th class="text-center" width="10%">Editar</th>
+                            <th class="text-center" width="10%">Exibir</th>
+                        </tr>
+                        <tr>
+                            <th style='display: none;'><input type='text' id='txtColuna1' width='15%'/></th>
+                            <th width="%"><input type='text' id='txtColuna1'></th>
+                            <th width="%"><input type='text' id='txtColuna2'></th>
+                            <th width="%"><input type='text' id='txtColuna3'></th>
+                            <th width="%"><input type='text' id='txtColuna4'></th>
+                            <th width="%"></th>
+                            <th width="%"></th>
                         </tr>
                     </thead>
                     <tbody class="">
                         <?php foreach ($materiais as $material): ?>
                             <tr>
                                 <td style="display: none;"><?= $material->getId() ?></td>
-                                <td><?= $material->getNome() ?></td>
-                                <td><?= $material->getModelo() ?></td>
-                                <td class="text-center"><?= $material->getQuant() ?></td>
-                                <td><?= $material->getFabricante() ?></td>
-                                <td class="text-center"><button onClick="editar(<?= $material->getId() ?>)"><span class="glyphicon glyphicon-pencil"></span></button></td>
-                                <td class="text-center"><button onClick="exibir(<?= $material->getId() ?>)"><span class="glyphicon glyphicon-search"></span></button></td>
+                                <td width="%"><?= $material->getNome() ?></td>
+                                <td width="%"><?= $material->getModelo() ?></td>
+                                <td width="%" class="text-center"><?= $material->getQuant() ?></td>
+                                <td width="%"><?= $material->getFabricante() ?></td>
+                                <td width="%" class="text-center"><button onClick="editar(<?= $material->getId() ?>)"><span class="glyphicon glyphicon-pencil"></span></button></td>
+                                <td width="%" class="text-center"><button onClick="exibir(<?= $material->getId() ?>)"><span class="glyphicon glyphicon-search"></span></button></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>

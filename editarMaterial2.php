@@ -97,13 +97,25 @@
     echo"<option value='$id'>$nome</option>";
   endforeach;
 
-  echo " 
+  /*echo " 
     </select></p>
     <p>Categoria de material: <input type='text' id='matCatMat' name='matCatMat' value='$catMat'> </p>
     <p>Número de série: <input type='text' id='matNumSerie' name='matNumSerie' value='$numSerie'> </p>
     <button type='submit' name='editar' class='btn btn-success'>Alterar</button>
     <button type='submit' name='duplicar' class='btn btn-info' value='autoriza'>Duplicar</button>
     <button type='submit' name='excluir' id='excluir' class='btn btn-danger'>Excluir</button>
+    </form>";*/
+    echo " 
+    </select></p>
+    <p>Categoria de material: <input type='text' id='matCatMat' name='matCatMat' value='$catMat'> </p>
+    <p>Número de série: <input type='text' id='matNumSerie' name='matNumSerie' value='$numSerie'> </p>
+    <button onClick='confirmaAlterar()' type='button' class='btn btn-success'>Alterar</button>
+    <button onClick='confirmaDuplicar()' type='button' class='btn btn-info'>Duplicar</button>
+    <button onClick='confirmaExcluir()' type='button' class='btn btn-danger'>Excluir</button>
+    <br><br>
+    <button type='submit' name='editar' id='confirmarAlterar' style='display:none;' class='btn btn-success'>Confirmar</button>
+    <button type='submit' name='duplicar' id='confirmarDuplicar' style='display:none;' class='btn btn-info'>Confirmar</button>
+    <button type='submit' name='excluir' id='confirmarExcluir' style='display:none;' class='btn btn-danger'>Confirmar</button>
     </form>";
 ?>
 </body>

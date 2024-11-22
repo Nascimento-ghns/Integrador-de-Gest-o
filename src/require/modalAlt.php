@@ -30,7 +30,7 @@ print <<<HTML
             </div>
             <!-- Rodapé -->
             <div class="modal-footer">
-                  <button type="button" class="btn btn-info center-block" data-dismiss="modal">Fechar</button>
+                  <button type="button" class="btn btn-info center-block" data-dismiss="modal">Cancelar</button>
             </div>
         </div>
       
