@@ -24,13 +24,22 @@ class ordemSvRepositorio
             $dados['ordemDependencia'],
             $dados['ordemNum'],
             $dados['ordemAno'],
+            $dados['ordemTipoMnt'],
+            $dados['ordemEstadoFinal'],
+            $dados['ordemDataInicioMnt'],
+            $dados['ordemDataFimMnt'],
+            $dados['ordemHoraInicioMnt'],
+            $dados['ordemHoraFimMnt'],
+            $dados['ordemHomemHora'],
+            $dados['ordemDiasAteIniciar'],
+            $dados['ordemDiasTrabalhados']
         );
     }
 
     public function salvar(OrdemSv $ordemSv)
     {
         $nome = "os".$ordemSv->getNum();
-        $sql = "INSERT INTO ordemsv (ordemAutor, ordemDataInicio, ordemDataTermino, ordemTempoTranscorrido, ordemDescricao, ordemDependencia, ordemNum, ordemAno) VALUES (?,?,?,?,?,?,?,?); Create table $nome(tipoMnt varchar(255), tecnicos varchar(255) unique, equipamentosAfetados varchar(255), estadoFinal varchar(255), matConsumo varchar(255), matConsumoDuravel varchar(255), matPermanente varchar(255), matPermanenteRemovido varchar(255), pedidoMaterial varchar(255), dataInicio date, dataFim date, horaInicio time, horaFim time, Hh varchar(255), diasAteInicio date, diasTrabalhados date);";
+        $sql = "INSERT INTO ordemsv (ordemAutor, ordemDataInicio, ordemDataTermino, ordemTempoTranscorrido, ordemDescricao, ordemDependencia, ordemNum, ordemAno) VALUES (?,?,?,?,?,?,?,?); Create table $nome(id int AUTO_INCREMENT PRIMARY KEY, tecnicos varchar(255) unique, equipamentosAfetados varchar(255), matConsumo varchar(255), matConsumoDuravel varchar(255), matPermanente varchar(255), matPermanenteRemovido varchar(255), pedidoMaterial varchar(255), quantidadeMaterial int);";
         $statement = $this->pdo->prepare($sql);
         $statement->bindValue(1, $ordemSv->getAutor());
         $statement->bindValue(2, $ordemSv->getDataInicio());

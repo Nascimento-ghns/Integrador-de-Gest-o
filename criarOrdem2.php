@@ -16,7 +16,16 @@
     $_POST['descricao'],
     $_POST['dependencia'],
     $_POST['numero'],
-    $_POST['ano']
+    $_POST['ano'],
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
     );
 
     $ordemSvRepositorio = new ordemSvRepositorio($pdo);

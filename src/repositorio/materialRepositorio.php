@@ -91,6 +91,18 @@ class materialRepositorio
         return $this->formarObjeto($dados);
     }
 
+    public function buscarMaterial(int $matTipo)
+    {
+        $sql = "SELECT * FROM material WHERE matTipo = ?";
+        $statement = $this->pdo->prepare($sql);
+        $statement->bindValue(1, $matTipo);
+        $statement->execute();
+
+        $dados = $statement->fetch(PDO::FETCH_ASSOC);
+
+        return $this->formarObjeto($dados);
+    }
+
     public function excluir(int $matId)
     {
         $sql = "DELETE FROM material WHERE matId = ?";

@@ -45,7 +45,7 @@
                     <thead class="thead-dark">
                         <tr>
                             <th style="display: none;"></th>
-                            <th class="text-center" width="10%">Os</th>
+                            <th class="text-center" width="10%">OSv</th>
                             <th class="text-center" width="90%">Descricao</th>
                         </tr>
                         <tr>
@@ -58,7 +58,7 @@
                         <?php foreach ($ordemSv as $ordemSv): ?>
                             <tr>
                                 <td style="display: none;"><?= $ordemSv->getNum() ?></td>
-                                <td width="%">Ordem N</td>
+                                <td width="%">OSv<?= $ordemSv->getNum() ?></td>
                                 <td width="%"><?= $ordemSv->getDescricao() ?></td>
                             </tr>
                         <?php endforeach; ?>
