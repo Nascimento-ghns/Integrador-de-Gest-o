@@ -18,11 +18,14 @@
     $tipos = $tipoRepositorio->buscarTodos();
 
     $ordemSvRepositorio = new ordemSvRepositorio($pdo);
+    $ordemSv = $ordemSvRepositorio->numeroOrdem();
+    if($ordemSv == null){
+        $ordemNum = 0;
+    }
+    else{
+        $ordemNum = $ordemSv->getNum();
+    }
     $ordemSv = $ordemSvRepositorio->buscarTodos();
-    $ordemNum = 0;
-    foreach ($ordemSv as $ordemSv): 
-        $ordemNum = $ordemNum + 1;
-    endforeach;
 
     $anoAtual = date('Y');
 

@@ -67,11 +67,13 @@ class ordemSvRepositorio
 
     public function numeroOrdem()
     {
-        $sql = "SELECT max(ordemNum) FROM ordemsv";
+        $sql = "SELECT * FROM ordemsv where (SELECT max(ordemNum) from ordemsv)";
         $statement = $this->pdo->query($sql);
-        $dados = $statement->execute();
-
-        return $dados;
+        $statement->execute();
+        $dados = $statement->fetch(PDO::FETCH_ASSOC);
+        if($dados != false){
+            return $this->formarObjeto($dados);
+        }
     }
 
     public function buscar(int $ordemId)
