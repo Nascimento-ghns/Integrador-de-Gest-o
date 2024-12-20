@@ -33,6 +33,20 @@ class tecnicoRepositorio
         return $todosOsDados;
     }
 
+    public function buscarDisponiveis(int $ordemNum)
+    {
+        $OSv="os".$ordemNum;
+        $sql = "SELECT * FROM tecnicos WHERE tecnicoNome NOT IN (SELECT tecnicos FROM $OSv)";
+        $statement = $this->pdo->query($sql);
+        $dados = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        $todosOsDados = array_map(function ($tipo){
+            return $this->formarObjeto($tipo);
+        },$dados);
+
+        return $todosOsDados;
+    }
+
     public function buscar(int $tecnicoId)
     {
         $sql = "SELECT * FROM tecnicos WHERE tecnicoId = ?";

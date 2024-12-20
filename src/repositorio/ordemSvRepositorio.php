@@ -98,4 +98,52 @@ class ordemSvRepositorio
         return $this->formarObjeto($dados);
     }
 
+    public function salvarDataInicioMnt(int $ordemNum)
+    {
+        $sql = "UPDATE ordemsv SET ordemDataInicioMnt = ? WHERE ordemNum = ?";
+        $statement = $this->pdo->prepare($sql);
+        $statement->bindValue(1, date("Y-m-d"));
+        $statement->bindValue(2, $ordemNum);
+        $statement->execute();
+    }
+
+    public function salvarHoraInicioMnt(int $ordemNum, DateTime $agora)
+    {
+        $sql = "UPDATE ordemsv SET ordemHoraInicioMnt = ? WHERE ordemNum = ?";
+        $statement = $this->pdo->prepare($sql);
+        $statement->bindValue(1, $agora->format('H:i'));
+        $statement->bindValue(2, $ordemNum);
+        $statement->execute();
+    }
+
+    public function calculaDiasAteIniciar(OrdemSv $ordemSv)
+    {
+        $data_inicio = new DateTime($ordemSv->getDataInicio());
+        $data_inicioMnt = new DateTime($ordemSv->getDataInicioMnt());
+        $dateInterval = $data_inicio->diff($data_inicioMnt);
+        $sql = "UPDATE ordemsv SET ordemDiasAteIniciar = ? WHERE ordemNum = ?";
+        $statement = $this->pdo->prepare($sql);
+        $statement->bindValue(1, $dateInterval->days);
+        $statement->bindValue(2, $ordemSv->getNum());
+        $statement->execute();
+    }
+
+    public function finalizarOrdem(int $ordemNum)
+    {
+        $sql = "UPDATE ordemsv SET ordemEstadoFinal = ? WHERE ordemNum = ?";
+        $statement = $this->pdo->prepare($sql);
+        $statement->bindValue(1, 'finalizado');
+        $statement->bindValue(2, $ordemNum);
+        $statement->execute();
+    }
+
+    public function excluir(int $ordemNum)
+    {
+        $nomeTabela = 'os'.$ordemNum;
+        $sql = "DELETE FROM ordemsv WHERE ordemNum = ?; drop table $nomeTabela;";
+        $statement = $this->pdo->prepare($sql);
+        $statement->bindValue(1,$ordemNum);
+        $statement->execute();
+    }
+
 }

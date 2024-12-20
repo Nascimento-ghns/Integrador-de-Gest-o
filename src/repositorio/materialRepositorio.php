@@ -97,10 +97,13 @@ class materialRepositorio
         $statement = $this->pdo->prepare($sql);
         $statement->bindValue(1, $matTipo);
         $statement->execute();
+        $dados = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-        $dados = $statement->fetch(PDO::FETCH_ASSOC);
+        $todosOsDados = array_map(function ($material){
+            return $this->formarObjeto($material);
+        },$dados);
 
-        return $this->formarObjeto($dados);
+        return $todosOsDados;
     }
 
     public function excluir(int $matId)

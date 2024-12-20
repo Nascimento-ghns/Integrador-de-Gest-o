@@ -1,7 +1,8 @@
 <?php
 
     $ordemNum = $_GET['nomeTabela'];
-    if(isset($_POST['addTecnico']) or isset($_POST['addEquipamentoAfetado'])){
+
+    if(isset($_POST['addTecnico']) or isset($_POST['addEquipamentoAfetado']) or isset($_POST['excluirEquipamentoAfetado']) or isset($_POST['excluirTecnico']) or isset($_POST['addMatConsumo']) or isset($_POST['addMatConsumoDuravel']) or isset($_POST['addMatPermanente']) or isset($_POST['addMatPermanenteRemovido']) or isset($_POST['excluirMatConsumo']) or isset($_POST['excluirMatConsumoDuravel']) or isset($_POST['excluirMatPermanente']) or isset($_POST['excluirMatPermanenteRemovido']) or isset($_POST['finalizarOS']) or isset($_POST['excluirOS'])){
         header("Location:http://localhost/IntegradorDeGest%C3%A3o/redirecionaOrdem.php?nomeTabela=$ordemNum");  
     }
 
@@ -20,18 +21,30 @@
     
     $ordemSvRepositorio = new ordemSvRepositorio($pdo);
     $ordemSv = $ordemSvRepositorio->buscarPorNumero($ordemNum);
+    if($ordemSv->getDataInicioMnt() == null){
+        $ordemSvRepositorio->salvarDataInicioMnt($ordemNum);
+        $ordemSv = $ordemSvRepositorio->buscarPorNumero($ordemNum);
+        $ordemSvRepositorio->calculaDiasAteIniciar($ordemSv);
+    }
+    if($ordemSv->getHoraInicioMnt() == null){
+        $timezone = new DateTimeZone('America/Sao_Paulo');
+        $agora = new DateTime('now', $timezone);
+        $ordemSvRepositorio->salvarHoraInicioMnt($ordemNum, $agora);
+    }
 
     $dependenciaRepositorio = new dependenciaRepositorio($pdo);
     $dependencia = $dependenciaRepositorio->buscar($ordemSv->getDependencia()); 
 
+    $materialRepositorio = new materialRepositorio($pdo);
+    $material = $materialRepositorio->buscarDependencia($ordemSv->getDependencia());
+
     $tecnicosRepositorio = new tecnicoRepositorio($pdo);
-    $tecnicos = $tecnicosRepositorio->buscarTodos(); 
+    $tecnicos = $tecnicosRepositorio->buscarDisponiveis($ordemNum); 
 
     $OSvRepositorio = new OSvRepositorio($pdo);
     $OSvs = $OSvRepositorio->buscarTodos($ordemNum);
 
-    $materialRepositorio = new materialRepositorio($pdo);
-    $material = $materialRepositorio->buscarDependencia($ordemSv->getDependencia());
+   
 
     $anoAtual = date('Y');
 
@@ -45,6 +58,49 @@
         $OSvRepositorio->salvarEquipamentoAfetado($OSv, $ordemNum);
     }
 
+    if(isset($_POST['addMatConsumo'])){
+        $OSv = new OSv(null, null, null, $_POST['matConsumo'], null, null, null, null, null);
+        $OSvRepositorio->salvarMaterialConsumo($OSv, $ordemNum);
+    }
+
+    if(isset($_POST['addMatConsumoDuravel'])){
+        $OSv = new OSv(null, null, null, null, $_POST['matConsumoDuravel'], null, null, null, null);
+        $OSvRepositorio->salvarMaterialConsumoDuravel($OSv, $ordemNum);
+    }
+
+    if(isset($_POST['addMatPermanente'])){
+        $OSv = new OSv(null, null, null, null, null, $_POST['matPermanente'], null, null, null);
+        $OSvRepositorio->salvarMaterialPermanente($OSv, $ordemNum);
+    }
+
+    if(isset($_POST['addMatPermanenteRemovido'])){
+        $OSv = new OSv(null, null, null, null, null, null, $_POST['matPermanenteRemovido'], null, null);
+        $OSvRepositorio->salvarMaterialPermanenteRemovido($OSv, $ordemNum);
+    }
+    
+    if(isset($_POST['excluirTecnico'])){
+        $OSvRepositorio->excluirTecnico($_POST['excluirTecnico'], $ordemNum);
+    }
+
+    if(isset($_POST['excluirEquipamentoAfetado'])){
+        $OSvRepositorio->excluirEquipamentoAfetado($_POST['excluirEquipamentoAfetado'], $ordemNum);
+    }
+
+    if(isset($_POST['excluirMatConsumo'])){
+        $OSvRepositorio->excluirMatConsumo($_POST['excluirMatConsumo'], $ordemNum);
+    }
+
+    if(isset($_POST['excluirMatConsumoDuravel'])){
+        $OSvRepositorio->excluirMatConsumoDuravel($_POST['excluirMatConsumoDuravel'], $ordemNum);
+    }
+
+    if(isset($_POST['excluirMatPermanente'])){
+        $OSvRepositorio->excluirMatPermanente($_POST['excluirMatPermanente'], $ordemNum);
+    }
+
+    if(isset($_POST['excluirMatPermanenteRemovido'])){
+        $OSvRepositorio->excluirMatPermanenteRemovido($_POST['excluirMatPermanenteRemovido'], $ordemNum);
+    }
 ?>
 
 <!DOCTYPE html>
@@ -62,13 +118,69 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Integrador de Gestão</title>
     <script type="text/javascript">
-        function excluirTecnico(nomeTecnico){
-            console.log(1);
-            
-        }
+
         $(document).ready(function(){
+
+            $("#btnFim").click(function(evento){
+                $.ajax({
+                    type: "post",
+                    data: "ordemNum=" + ordemNum,
+                    url: "finalizarOrdem.php",
+                    success: function( resposta ) {
+                        if (resposta.indexOf("Erro") != -1 ) {
+                            $("#modalErroTitulo").html('Erro');
+                            $("#modalErro").html( resposta );
+                            $("#janelaModalErro").modal();
+                        }
+                        else {
+                            $("#modalTextoTitulo").text("OS finalizada");
+                            $("#modalTexto").html( resposta );
+                            $("#janelaModal").modal();
+                        }
+                    }
+                });	
+                $(location).attr('href', 'http://localhost/IntegradorDeGest%C3%A3o/editarOrdem.php');
+            })
+
+            $("#btnExcluir").click(function(evento){
+                $.ajax({
+                    type: "post",
+                    data: "ordemNum=" + ordemNum,
+                    url: "excOrdem.php",
+                    success: function( resposta ) {
+                        if (resposta.indexOf("Erro") != -1 ) {
+                            $("#modalErroTitulo").html('Erro de Exclusão');
+                            $("#modalErro").html( resposta );
+                            $("#janelaModalErro").modal();
+                        }
+                        else {
+                            $("#modalTextoTitulo").text("Exclusão bem sucedida");
+                            $("#modalTexto").html( resposta );
+                            $("#janelaModal").modal();
+                        }
+                    }
+                });	
+                $(location).attr('href', 'http://localhost/IntegradorDeGest%C3%A3o/editarOrdem.php');
+            })
             
         });
+
+        var ordemNum = "<?=$ordemNum?>";
+
+        function excluirOS(){
+            var nome = "OSv<?=$ordemNum?>";
+            $("#modalExcTexto").html( "Deseja realmente excluir definitivamente as informações de <b>"+nome+"</b>?");
+            $("#modalExcTitulo").text("ATENÇÃO: Exclusão Definitiva de OS");
+            $("#janelaModalExclusao").modal();
+        }
+
+        function finalizarOS(){
+            var nome = "OSv<?=$ordemNum?>";
+            $("#modalFimTexto").html( "Deseja realmente finalizar definitivamente as informações de <b>"+nome+"</b>?");
+            $("#modalFimTitulo").text("ATENÇÃO: Finalização Definitiva de OS");
+            $("#janelaModalFim").modal();
+        }
+
     </script>
 </head>
 <body>
@@ -105,7 +217,7 @@
                                 <div class="col-10">
                                     <select name="tecnicos" id="">
                                         <option value=""></option>
-                                        <?php foreach ($tecnicos as $tecnicos): ?>
+                                        <?php $tecnicos = $tecnicosRepositorio->buscarTodos(); foreach ($tecnicos as $tecnicos): ?>
                                             <option value="<?=$tecnicos->getNome()?>"><?=$tecnicos->getNome()?></option>
                                         <?php endforeach; ?>
                                     </select>
@@ -129,7 +241,7 @@
                                         <tr>
                                             <td style="display: none;"></td>
                                             <td><?=$OSvs->getTecnicos()?></td>
-                                            <td width="" class="text-center"><button onClick="excluirTecnico(<?= $OSvs->getTecnicos() ?>)"><span class="glyphicon glyphicon-trash"></span></button></td>
+                                            <td width="" class="text-center"><button type="submit" name="excluirTecnico" value="<?=$OSvs->getTecnicos()?>"><span class="glyphicon glyphicon-trash"></span></button></td>
                                         </tr>
                                     <?php } endforeach; ?>
                                 </tbody>
@@ -140,9 +252,9 @@
                         <form action="" class="fundoCinza form" method="post">
                             <h3 class="centralizaTitulo" style="margin-top: 0;">Métricas de trabalho</h3>
                             <label for="">Data de início:</label>
-                            <input type="date" name="dataInicio">
+                            <input type="date" name="dataInicio" disabled value="<?=$ordemSv->getDataInicioMnt()?>">
                             <label for="">Hora de início:</label>
-                            <input type="time" name="horaInicio">
+                            <input type="time" name="horaInicio" disabled value="<?=$ordemSv->getHoraInicioMnt()?>">
                             <label for="">Data de fim:</label>
                             <input type="date" name="dataFim">
                             <label for="">Hora de fim:</label>
@@ -150,7 +262,7 @@
                             <label for="">Hh:</label>
                             <input type="text" name="Hh">
                             <label for="">Dias até iniciar OSv:</label>
-                            <input type="text" name="diasAteInicio">
+                            <input type="text" name="diasAteInicio" disabled value="<?=$ordemSv->getDiasAteIniciar()?>">
                             <label for="">Dias de trabalho OSv:</label>
                             <input type="text" name="diasTrabalhados">
                         </form>
@@ -180,16 +292,24 @@
                                 <thead class="thead-dark" >
                                     <tr style="width: 100%;">
                                         <th style="display: none;"></th>
-                                        <th class="text-center" style="width: 100%;">Nome</th>
+                                        <th class="text-center" style="width: 23%;">Nome</th>
+                                        <th class="text-center" style="width: 23%;">Fabricante</th>
+                                        <th class="text-center" style="width: 23%;">Modelo</th>
+                                        <th class="text-center" style="width: 23%;">N/S</th>
+                                        <th style="width: 8%;"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php $OSvs = $OSvRepositorio->buscarTodos($ordemNum); foreach ($OSvs as $OSvs): 
                                         if($OSvs->getEquipamentosAfetados() != null){?>
-                                        
                                         <tr>
-                                            <td style="display: none;"></td>
-                                            <td><?=$OSvs->getEquipamentosAfetados()?></td>
+                                            <?php $material = $materialRepositorio->buscar($OSvs->getEquipamentosAfetados()); ?>
+                                            <td style="display: none;"><?=$material->getId()?></td>
+                                            <td><?=$material->getNome()?></td>
+                                            <td><?=$material->getFabricante()?></td>
+                                            <td><?=$material->getModelo()?></td>
+                                            <td><?=$material->getNumSerie()?></td>
+                                            <td width="" class="text-center"><button type="submit" name="excluirEquipamentoAfetado" value="<?=$material->getId()?>"><span class="glyphicon glyphicon-trash"></span></button></td>
                                         </tr>
                                     <?php } endforeach; ?>
                                 </tbody>
@@ -205,9 +325,9 @@
                                     <select name="matConsumo" id="">
                                         <option value=""></option>
                                         <?php 
-                                            $material = $materialRepositorio->buscarMaterial(5);
-                                            foreach ($material as $material): ?>
-                                                <option value="<?=$material->getNome()?>"><?=$material->getNome()?></option>
+                                            $materialConsumo = $materialRepositorio->buscarMaterial(5);
+                                            foreach ($materialConsumo as $material): ?>
+                                                <option value="<?=$material->getId()?>"><?=$material->getNome()?></option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
@@ -220,14 +340,26 @@
                                 <thead class="thead-dark" >
                                     <tr style="width: 100%;">
                                         <th style="display: none;"></th>
-                                        <th class="text-center" style="width: 100%;">Nome</th>
+                                        <th class="text-center" style="width: 25%;">Nome</th>
+                                        <th class="text-center" style="width: 25%;">Fabricante</th>
+                                        <th class="text-center" style="width: 25%;">Modelo</th>
+                                        <th class="text-center" style="width: 25%;">N/S</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td style="display: none;"></td>
-                                        <td>Placa de Vídeo</td>
-                                    </tr>
+                                    <?php $OSvs = $OSvRepositorio->buscarTodos($ordemNum); foreach ($OSvs as $OSvs): 
+                                        if($OSvs->getMatConsumo() != null){?>
+                                        <tr>
+                                            <?php $material = $materialRepositorio->buscar($OSvs->getMatConsumo()); ?>
+                                            <td style="display: none;"><?=$material->getId()?></td>
+                                            <td><?=$material->getNome()?></td>
+                                            <td><?=$material->getFabricante()?></td>
+                                            <td><?=$material->getModelo()?></td>
+                                            <td><?=$material->getNumSerie()?></td>
+                                            <td width="" class="text-center"><button type="submit" name="excluirMatConsumo" value="<?=$material->getId()?>"><span class="glyphicon glyphicon-trash"></span></button></td>
+                                        </tr>
+                                    <?php } endforeach; ?>
                                 </tbody>
                             </table>
                         </form>
@@ -241,15 +373,17 @@
                             <label for="tecnicos">Selecione os materiais:</label>
                             <div class="row">
                                 <div class="col-10">
-                                    <select name="tecnicos" id="">
+                                    <select name="matConsumoDuravel" id="">
                                         <option value=""></option>
-                                        <?php foreach ($tecnicos as $tecnicos): ?>
-                                            <option value="<?=$tecnicos->getId()?>"><?=$tecnicos->getNome()?></option>
+                                        <?php 
+                                            $materialConsumoDuravel = $materialRepositorio->buscarMaterial(11);
+                                            foreach ($materialConsumoDuravel as $material): ?>
+                                                <option value="<?=$material->getId()?>"><?=$material->getNome()?></option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
                                 <div class="col-2">
-                                    <button class="adiciona"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                                    <button class="adiciona" name="addMatConsumoDuravel"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
                                 </div>
                             </div>
                             <br>
@@ -257,14 +391,26 @@
                                 <thead class="thead-dark" >
                                     <tr style="width: 100%;">
                                         <th style="display: none;"></th>
-                                        <th class="text-center" style="width: 100%;">Nome</th>
+                                        <th class="text-center" style="width: 25%;">Nome</th>
+                                        <th class="text-center" style="width: 25%;">Fabricante</th>
+                                        <th class="text-center" style="width: 25%;">Modelo</th>
+                                        <th class="text-center" style="width: 25%;">N/S</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td style="display: none;"></td>
-                                        <td>Placa de Vídeo</td>
-                                    </tr>
+                                    <?php $OSvs = $OSvRepositorio->buscarTodos($ordemNum); foreach ($OSvs as $OSvs): 
+                                        if($OSvs->getMatConsumoDuravel() != null){?>
+                                        <tr>
+                                            <?php $material = $materialRepositorio->buscar($OSvs->getMatConsumoDuravel()); ?>
+                                            <td style="display: none;"><?=$material->getId()?></td>
+                                            <td><?=$material->getNome()?></td>
+                                            <td><?=$material->getFabricante()?></td>
+                                            <td><?=$material->getModelo()?></td>
+                                            <td><?=$material->getNumSerie()?></td>
+                                            <td width="" class="text-center"><button type="submit" name="excluirMatConsumoDuravel" value="<?=$material->getId()?>"><span class="glyphicon glyphicon-trash"></span></button></td>
+                                        </tr>
+                                    <?php } endforeach; ?>
                                 </tbody>
                             </table>
                         </form>
@@ -275,15 +421,17 @@
                             <label for="tecnicos">Selecione os materiais:</label>
                             <div class="row">
                                 <div class="col-10">
-                                    <select name="tecnicos" id="">
+                                    <select name="matPermanente" id="">
                                         <option value=""></option>
-                                        <?php foreach ($tecnicos as $tecnicos): ?>
-                                            <option value="<?=$tecnicos->getId()?>"><?=$tecnicos->getNome()?></option>
+                                        <?php 
+                                            $materialPermanente = $materialRepositorio->buscarMaterial(12);
+                                            foreach ($materialPermanente as $material): ?>
+                                                <option value="<?=$material->getId()?>"><?=$material->getNome()?></option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
                                 <div class="col-2">
-                                    <button class="adiciona"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                                    <button class="adiciona" name="addMatPermanente"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
                                 </div>
                             </div>
                             <br>
@@ -291,14 +439,26 @@
                                 <thead class="thead-dark" >
                                     <tr style="width: 100%;">
                                         <th style="display: none;"></th>
-                                        <th class="text-center" style="width: 100%;">Nome</th>
+                                        <th class="text-center" style="width: 25%;">Nome</th>
+                                        <th class="text-center" style="width: 25%;">Fabricante</th>
+                                        <th class="text-center" style="width: 25%;">Modelo</th>
+                                        <th class="text-center" style="width: 25%;">N/S</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td style="display: none;"></td>
-                                        <td>Placa de Vídeo</td>
-                                    </tr>
+                                    <?php $OSvs = $OSvRepositorio->buscarTodos($ordemNum); foreach ($OSvs as $OSvs): 
+                                        if($OSvs->getMatPermanente() != null){?>
+                                        <tr>
+                                            <?php $material = $materialRepositorio->buscar($OSvs->getMatPermanente()); ?>
+                                            <td style="display: none;"><?=$material->getId()?></td>
+                                            <td><?=$material->getNome()?></td>
+                                            <td><?=$material->getFabricante()?></td>
+                                            <td><?=$material->getModelo()?></td>
+                                            <td><?=$material->getNumSerie()?></td>
+                                            <td width="" class="text-center"><button type="submit" name="excluirMatPermanente" value="<?=$material->getId()?>"><span class="glyphicon glyphicon-trash"></span></button></td>
+                                        </tr>
+                                    <?php } endforeach; ?>
                                 </tbody>
                             </table>
                         </form>
@@ -312,15 +472,17 @@
                             <label for="tecnicos">Selecione os materiais:</label>
                             <div class="row">
                                 <div class="col-10">
-                                    <select name="tecnicos" id="">
+                                    <select name="matPermanenteRemovido" id="">
                                         <option value=""></option>
-                                        <?php foreach ($tecnicos as $tecnicos): ?>
-                                            <option value="<?=$tecnicos->getId()?>"><?=$tecnicos->getNome()?></option>
+                                        <?php 
+                                            $materialPermanente = $materialRepositorio->buscarMaterial(12);
+                                            foreach ($materialPermanente as $material): ?>
+                                                <option value="<?=$material->getId()?>"><?=$material->getNome()?></option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
                                 <div class="col-2">
-                                    <button class="adiciona"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                                    <button class="adiciona" name="addMatPermanenteRemovido"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
                                 </div>
                             </div>
                             <br>
@@ -328,14 +490,26 @@
                                 <thead class="thead-dark" >
                                     <tr style="width: 100%;">
                                         <th style="display: none;"></th>
-                                        <th class="text-center" style="width: 100%;">Nome</th>
+                                        <th class="text-center" style="width: 25%;">Nome</th>
+                                        <th class="text-center" style="width: 25%;">Fabricante</th>
+                                        <th class="text-center" style="width: 25%;">Modelo</th>
+                                        <th class="text-center" style="width: 25%;">N/S</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td style="display: none;"></td>
-                                        <td>Placa de Vídeo</td>
-                                    </tr>
+                                    <?php $OSvs = $OSvRepositorio->buscarTodos($ordemNum); foreach ($OSvs as $OSvs): 
+                                        if($OSvs->getMatPermanenteRemovido() != null){?>
+                                        <tr>
+                                            <?php $material = $materialRepositorio->buscar($OSvs->getMatPermanenteRemovido()); ?>
+                                            <td style="display: none;"><?=$material->getId()?></td>
+                                            <td><?=$material->getNome()?></td>
+                                            <td><?=$material->getFabricante()?></td>
+                                            <td><?=$material->getModelo()?></td>
+                                            <td><?=$material->getNumSerie()?></td>
+                                            <td width="" class="text-center"><button type="submit" name="excluirMatPermanenteRemovido" value="<?=$material->getId()?>"><span class="glyphicon glyphicon-trash"></span></button></td>
+                                        </tr>
+                                    <?php } endforeach; ?>
                                 </tbody>
                             </table>
                         </form>
@@ -351,7 +525,19 @@
                     </div>
                 </div>
                 <br>
+                <div class="row">
+                    <div class="col-12 text-right">
+                        <button onClick="finalizarOS()" class="btn btn-success">Finalizar</button>
+                        <button onClick="excluirOS()" class="btn btn-danger">Excluir</button>
+                        <button type="button" name="voltar" class="btn btn-warning">Voltar</button>                
+                    </div>
+                </div>
+                <br>
             </div>
         </div>
+        <?php
+            include "src/require/modalExclusao.php";
+            include "src/require/modalFimOS.php";
+        ?>
 </body>
 </html>
