@@ -46,12 +46,14 @@
                         <tr>
                             <th style="display: none;"></th>
                             <th class="text-center" width="10%">OSv</th>
-                            <th class="text-center" width="90%">Descricao</th>
+                            <th class="text-center" width="80%">Descricao</th>
+                            <th class="text-center" width="10%">Status</th>
                         </tr>
                         <tr>
                             <th style='display: none;'><input type='text' id='txtColuna1' width='15%'/></th>
                             <th width="%"><input type='text' id='txtColuna1'></th>
                             <th width="%"><input type='text' id='txtColuna2'></th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -60,6 +62,7 @@
                                 <td style="display: none;"><?= $ordemSv->getNum() ?></td>
                                 <td width="%">OSv<?= $ordemSv->getNum() ?></td>
                                 <td width="%"><?= $ordemSv->getDescricao() ?></td>
+                                <td class="text-center"><?=$ordemSv->getEstadoFinal()?></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>

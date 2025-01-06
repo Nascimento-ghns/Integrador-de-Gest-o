@@ -9,8 +9,12 @@
 
     $ordemNum = $_POST['ordemNum'];
 
-
     $ordemSvRepositorio = new ordemSvRepositorio($pdo);
-    $ordemSvRepositorio->finalizarOrdem($ordemNum);
+    $ordemSv = $ordemSvRepositorio->buscarPorNumero($ordemNum);
+    $ordemSvRepositorio->finalizarOrdem($ordemNum, $ordemSv->getDataInicio(), $ordemSv->getDataInicioMnt());
+    $ordemSvRepositorio->salvarDataTermino($ordemNum, $ordemSv->getDataInicio(), $ordemSv->getDataTermino());
+    $ordemSvRepositorio->salvarDataFimMnt($ordemNum, $ordemSv->getDataFimMnt());
+
+
 
 ?>

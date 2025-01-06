@@ -21,6 +21,12 @@
     
     $ordemSvRepositorio = new ordemSvRepositorio($pdo);
     $ordemSv = $ordemSvRepositorio->buscarPorNumero($ordemNum);
+    if($ordemSv->getEstadoFinal() == 'aberto'){
+        $display = '';
+    } 
+    else{
+        $display = 'disabled';
+    }
     if($ordemSv->getDataInicioMnt() == null){
         $ordemSvRepositorio->salvarDataInicioMnt($ordemNum);
         $ordemSv = $ordemSvRepositorio->buscarPorNumero($ordemNum);
@@ -181,6 +187,10 @@
             $("#janelaModalFim").modal();
         }
 
+        function voltar(){
+            $(location).attr('href', 'http://localhost/IntegradorDeGest%C3%A3o/editarOrdem.php');
+        }
+
     </script>
 </head>
 <body>
@@ -223,7 +233,7 @@
                                     </select>
                                 </div>
                                 <div class="col-2">
-                                    <button class="adiciona" name="addTecnico"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                                    <button class="adiciona" name="addTecnico" <?=$display?>><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
                                 </div>
                             </div>
                             <br>
@@ -241,7 +251,7 @@
                                         <tr>
                                             <td style="display: none;"></td>
                                             <td><?=$OSvs->getTecnicos()?></td>
-                                            <td width="" class="text-center"><button type="submit" name="excluirTecnico" value="<?=$OSvs->getTecnicos()?>"><span class="glyphicon glyphicon-trash"></span></button></td>
+                                            <td width="" class="text-center"><button type="submit" <?=$display?> name="excluirTecnico" value="<?=$OSvs->getTecnicos()?>"><span class="glyphicon glyphicon-trash"></span></button></td>
                                         </tr>
                                     <?php } endforeach; ?>
                                 </tbody>
@@ -252,19 +262,22 @@
                         <form action="" class="fundoCinza form" method="post">
                             <h3 class="centralizaTitulo" style="margin-top: 0;">Métricas de trabalho</h3>
                             <label for="">Data de início:</label>
-                            <input type="date" name="dataInicio" disabled value="<?=$ordemSv->getDataInicioMnt()?>">
+                            <input type="date" name="dataInicio"  value="<?=$ordemSv->getDataInicioMnt()?>">
                             <label for="">Hora de início:</label>
-                            <input type="time" name="horaInicio" disabled value="<?=$ordemSv->getHoraInicioMnt()?>">
+                            <input type="time" name="horaInicio"  value="<?=$ordemSv->getHoraInicioMnt()?>">
                             <label for="">Data de fim:</label>
-                            <input type="date" name="dataFim">
+                            <input type="date" name="dataFim"  value="<?=$ordemSv->getDataFimMnt()?>">
                             <label for="">Hora de fim:</label>
-                            <input type="time" name="horaFim">
+                            <input type="time" name="horaFim"  value="<?=$ordemSv->getHoraFimMnt()?>">
                             <label for="">Hh:</label>
-                            <input type="text" name="Hh">
+                            <input type="text" name="Hh"  value="<?=$ordemSv->getHomemHora()?>">
                             <label for="">Dias até iniciar OSv:</label>
-                            <input type="text" name="diasAteInicio" disabled value="<?=$ordemSv->getDiasAteIniciar()?>">
+                            <input type="text" name="diasAteInicio"  value="<?=$ordemSv->getDiasAteIniciar()?>">
                             <label for="">Dias de trabalho OSv:</label>
-                            <input type="text" name="diasTrabalhados">
+                            <input type="text" name="diasTrabalhados"  value="<?=$ordemSv->getDiasTrabalhados()?>">
+                            <br>
+                            <br>
+                            <button name="atualizarMetricas" type="submit" <?=$display?> class="btn btn-primary">Atualizar</button>
                         </form>
                     </div>
                 </div>
@@ -284,7 +297,7 @@
                                     </select>
                                 </div>
                                 <div class="col-2">
-                                    <button class="adiciona" name="addEquipamentoAfetado"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                                    <button class="adiciona" <?=$display?> name="addEquipamentoAfetado"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
                                 </div>
                             </div>
                             <br>
@@ -309,7 +322,7 @@
                                             <td><?=$material->getFabricante()?></td>
                                             <td><?=$material->getModelo()?></td>
                                             <td><?=$material->getNumSerie()?></td>
-                                            <td width="" class="text-center"><button type="submit" name="excluirEquipamentoAfetado" value="<?=$material->getId()?>"><span class="glyphicon glyphicon-trash"></span></button></td>
+                                            <td width="" class="text-center"><button <?=$display?> type="submit" name="excluirEquipamentoAfetado" value="<?=$material->getId()?>"><span class="glyphicon glyphicon-trash"></span></button></td>
                                         </tr>
                                     <?php } endforeach; ?>
                                 </tbody>
@@ -332,7 +345,7 @@
                                     </select>
                                 </div>
                                 <div class="col-2">
-                                    <button class="adiciona" name="addMatConsumo"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                                    <button class="adiciona" <?=$display?> name="addMatConsumo"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
                                 </div>
                             </div>
                             <br>
@@ -357,7 +370,7 @@
                                             <td><?=$material->getFabricante()?></td>
                                             <td><?=$material->getModelo()?></td>
                                             <td><?=$material->getNumSerie()?></td>
-                                            <td width="" class="text-center"><button type="submit" name="excluirMatConsumo" value="<?=$material->getId()?>"><span class="glyphicon glyphicon-trash"></span></button></td>
+                                            <td width="" class="text-center"><button <?=$display?> type="submit" name="excluirMatConsumo" value="<?=$material->getId()?>"><span class="glyphicon glyphicon-trash"></span></button></td>
                                         </tr>
                                     <?php } endforeach; ?>
                                 </tbody>
@@ -383,7 +396,7 @@
                                     </select>
                                 </div>
                                 <div class="col-2">
-                                    <button class="adiciona" name="addMatConsumoDuravel"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                                    <button class="adiciona" <?=$display?> name="addMatConsumoDuravel"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
                                 </div>
                             </div>
                             <br>
@@ -408,7 +421,7 @@
                                             <td><?=$material->getFabricante()?></td>
                                             <td><?=$material->getModelo()?></td>
                                             <td><?=$material->getNumSerie()?></td>
-                                            <td width="" class="text-center"><button type="submit" name="excluirMatConsumoDuravel" value="<?=$material->getId()?>"><span class="glyphicon glyphicon-trash"></span></button></td>
+                                            <td width="" class="text-center"><button <?=$display?> type="submit" name="excluirMatConsumoDuravel" value="<?=$material->getId()?>"><span class="glyphicon glyphicon-trash"></span></button></td>
                                         </tr>
                                     <?php } endforeach; ?>
                                 </tbody>
@@ -431,7 +444,7 @@
                                     </select>
                                 </div>
                                 <div class="col-2">
-                                    <button class="adiciona" name="addMatPermanente"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                                    <button class="adiciona" <?=$display?> name="addMatPermanente"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
                                 </div>
                             </div>
                             <br>
@@ -456,7 +469,7 @@
                                             <td><?=$material->getFabricante()?></td>
                                             <td><?=$material->getModelo()?></td>
                                             <td><?=$material->getNumSerie()?></td>
-                                            <td width="" class="text-center"><button type="submit" name="excluirMatPermanente" value="<?=$material->getId()?>"><span class="glyphicon glyphicon-trash"></span></button></td>
+                                            <td width="" class="text-center"><button type="submit" <?=$display?> name="excluirMatPermanente" value="<?=$material->getId()?>"><span class="glyphicon glyphicon-trash"></span></button></td>
                                         </tr>
                                     <?php } endforeach; ?>
                                 </tbody>
@@ -482,7 +495,7 @@
                                     </select>
                                 </div>
                                 <div class="col-2">
-                                    <button class="adiciona" name="addMatPermanenteRemovido"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                                    <button class="adiciona" <?=$display?> name="addMatPermanenteRemovido"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
                                 </div>
                             </div>
                             <br>
@@ -507,7 +520,7 @@
                                             <td><?=$material->getFabricante()?></td>
                                             <td><?=$material->getModelo()?></td>
                                             <td><?=$material->getNumSerie()?></td>
-                                            <td width="" class="text-center"><button type="submit" name="excluirMatPermanenteRemovido" value="<?=$material->getId()?>"><span class="glyphicon glyphicon-trash"></span></button></td>
+                                            <td width="" class="text-center"><button type="submit" <?=$display?> name="excluirMatPermanenteRemovido" value="<?=$material->getId()?>"><span class="glyphicon glyphicon-trash"></span></button></td>
                                         </tr>
                                     <?php } endforeach; ?>
                                 </tbody>
@@ -527,9 +540,9 @@
                 <br>
                 <div class="row">
                     <div class="col-12 text-right">
-                        <button onClick="finalizarOS()" class="btn btn-success">Finalizar</button>
+                        <button onClick="finalizarOS()" <?=$display?> class="btn btn-success">Finalizar</button>
                         <button onClick="excluirOS()" class="btn btn-danger">Excluir</button>
-                        <button type="button" name="voltar" class="btn btn-warning">Voltar</button>                
+                        <button onClick="voltar()" name="voltar" class="btn btn-warning">Voltar</button>                
                     </div>
                 </div>
                 <br>

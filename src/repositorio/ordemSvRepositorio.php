@@ -130,12 +130,72 @@ class ordemSvRepositorio
         $statement->execute();
     }
 
-    public function finalizarOrdem(int $ordemNum)
+    public function salvarDataInicio(int $ordemNum, string $dataInicio, string $dataTermino)
     {
-        $sql = "UPDATE ordemsv SET ordemEstadoFinal = ? WHERE ordemNum = ?";
+        if($dataTermino == null){
+            $dataTermino = date("Y-m-d");
+        }
+        $sql = "UPDATE ordemsv SET ordemDataTermino = ? WHERE ordemNum = ?";
+        $statement = $this->pdo->prepare($sql);
+        $statement->bindValue(1, $dataTermino);
+        $statement->bindValue(2, $ordemNum);
+        $statement->execute();
+    }
+
+    public function salvarDataTermino(int $ordemNum, string $dataInicio, string $dataTermino)
+    {
+        if($dataTermino == null){
+            $dataTermino = date("Y-m-d");
+        }
+        $sql = "UPDATE ordemsv SET ordemDataTermino = ?, ordemDataFimMnt = ? WHERE ordemNum = ?";
+        $statement = $this->pdo->prepare($sql);
+        $statement->bindValue(1, $dataTermino);
+        $statement->bindValue(2, $dataTermino);
+        $statement->bindValue(3, $ordemNum);
+        $statement->execute();
+    }
+
+    public function salvarDataFimMnt(int $ordemNum, string $dataFimMnt)
+    {
+        if($dataFimMnt == null){
+            $dataFimMnt = date("Y-m-d");
+        }
+        $sql = "UPDATE ordemsv SET ordemDataFimMnt = ?, ordemDataTermino = ? WHERE ordemNum = ?";
+        $statement = $this->pdo->prepare($sql);
+        $statement->bindValue(1, $dataFimMnt);
+        $statement->bindValue(2, $dataFimMnt);
+        $statement->bindValue(3, $ordemNum);
+        $statement->execute();
+    }
+
+    public function salvarHoraFimMnt(int $ordemNum, string $horaFimMnt)
+    {
+        if($horaFimMnt == null){
+            $horaFimMnt = date("H:i");
+        }
+        $sql = "UPDATE ordemsv SET ordemHoraFimMnt = ? WHERE ordemNum = ?";
+        $statement = $this->pdo->prepare($sql);
+        $statement->bindValue(1, $horaFimMnt);
+        $statement->bindValue(2, $ordemNum);
+        $statement->execute();
+    }
+
+
+
+    public function finalizarOrdem(int $ordemNum, string $dataInicio, string $dataInicioMnt)
+    {
+        $data_inicio = new DateTime($dataInicio);
+        $data_fim = new DateTime(date("Y-m-d"));
+        $data_inicioMnt = new DateTime($dataInicioMnt);
+        $tempoTranscorrido = $data_inicio->diff($data_fim);
+        $tempoTranscorridoAteIniciar = $data_inicio->diff($data_inicioMnt);
+        $tempoTranscorridoMnt = $data_inicioMnt->diff($data_fim);
+        $sql = "UPDATE ordemsv SET ordemEstadoFinal = ?, ordemDiasAteIniciar = ?, ordemDiasTrabalhados = ? WHERE ordemNum = ?";
         $statement = $this->pdo->prepare($sql);
         $statement->bindValue(1, 'finalizado');
-        $statement->bindValue(2, $ordemNum);
+        $statement->bindValue(5, $tempoTranscorridoAteIniciar->days);
+        $statement->bindValue(6, $tempoTranscorridoMnt->days);
+        $statement->bindValue(7, $ordemNum);
         $statement->execute();
     }
 
